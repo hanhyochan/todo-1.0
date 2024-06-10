@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [id, setId] = useState("");
@@ -16,13 +16,20 @@ export default function Login() {
   };
 
   function handleBtn(e) {
-    e.preventDefault(); // 페이지 새로고침 방지
-    const userInfo = {
+    e.preventDefault();
+    let userInfo = JSON.parse(localStorage.getItem("userInfos"));
+
+    if (userInfo == null) {
+      userInfo = [];
+    }
+
+    const infoForm = {
       key: crypto.randomUUID(),
       id: id,
       pw: pw,
     };
-    console.log(userInfo);
+    
+    localStorage.setItem("userInfos", JSON.stringify([...userInfo, infoForm]));
   }
 
   return (
@@ -52,15 +59,19 @@ export default function Login() {
         아이디 찾기
       </span>
       <span
-      onClick={() => {
-        navigate("/FindPw");
-      }}
-      >비밀번호 찾기</span>
+        onClick={() => {
+          navigate("/FindPw");
+        }}
+      >
+        비밀번호 찾기
+      </span>
       <span
-      onClick={() => {
-        navigate("/JoinMembership");
-      }}
-      >회원가입</span>
+        onClick={() => {
+          navigate("/JoinMembership");
+        }}
+      >
+        회원가입
+      </span>
     </>
   );
 }
