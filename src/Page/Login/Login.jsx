@@ -39,7 +39,7 @@ export default function Login() {
         <input
           value={id}
           onChange={handleId}
-          placeholder="아이디를 입력해주세요"
+          placeholder="아이디를 입력해주세요hh"
         />{" "}
         <br />
         <input
