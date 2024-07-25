@@ -1,11 +1,15 @@
 import { useState } from "react";
+import Input_info from "../../Common/Input_info";
+import Button from "../../Common/Button";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function FindPw() {
-  const [view, setView] = useState(false);
+  const [view, setView] = useState(true);
   const [findId, setFindId] = useState("");
   const [findName, setFindName] = useState("");
   const [findNum, setFindNum] = useState("");
   const [newPw, setnewPw] = useState("");
+  const naviate = useNavigate();
 
   const handleFindId = (e) => {
     setFindId(e.target.value);
@@ -27,6 +31,8 @@ export default function FindPw() {
       number: findNum,
     };
     console.log(idInfo);
+
+    naviate('/')
   };
 
   const handleNewPw = (e) => {
@@ -42,52 +48,48 @@ export default function FindPw() {
   };
 
   return (
-    <>
+    <div className="layout">
       <h1>비밀번호 찾기</h1>
       {view ? (
-        <>
-          <p>아이디와 개인정보를 입력해주세요</p>
+        <div>
+          <p className="subSentence">아이디와 개인정보를 입력해주세요</p>
           <form onSubmit={handleBtn}>
-            <input
+            <Input_info
               value={findId}
               type="type"
               placeholder="아이디를 입력해주세요."
               onChange={handleFindId}
             />
-            <br />
-            <input
+            <Input_info
               value={findName}
               type="type"
               placeholder="이름을 입력해주세요."
               onChange={handlefindName}
             />
-            <br />
-            <input
+            <Input_info
               value={findNum}
               type="number"
               placeholder="전화번호를 입력해주세요."
               onChange={handlefindNum}
             />
             <button>인증하기</button>
-            <br />
-            <button type="submit">확인</button>
+            <Button type="submit">확인</Button>
           </form>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="layout">
           <p>새로운 비밀번호를 입력해주세요.</p>
           <form onSubmit={handleBtn2}>
-            <input
+            <Input_info
               value={newPw}
               type="password"
               placeholder="비밀번호를 입력해주세요."
               onChange={handleNewPw}
             />
-            <br />
-            <button type="submit">확인</button>
+            <Button type="submit">확인</Button>
           </form>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

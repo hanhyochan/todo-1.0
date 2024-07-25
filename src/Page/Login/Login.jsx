@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Input from "../../Common/Input";
+import Button from "../../Common/Button";
 
 export default function Login() {
   const [id, setId] = useState("");
@@ -30,48 +32,52 @@ export default function Login() {
     };
     
     localStorage.setItem("userInfos", JSON.stringify([...userInfo, infoForm]));
+
+    navigate("./Todolist")
   }
 
   return (
-    <>
+    <div className="layout">
       <h1>Login</h1>
       <form onSubmit={handleBtn}>
-        <input
+        <Input
           value={id}
           onChange={handleId}
           placeholder="아이디를 입력해주세요"
-        />{" "}
-        <br />
-        <input
+        />
+
+        <Input
           value={pw}
           onChange={handlePw}
           type="password"
           placeholder="비밀번호를 입력해주세요"
-        />{" "}
-        <br />
-        <button type="submit">확인</button>
+        />
+
+        <Button>확인</Button>
       </form>
-      <span
+      <div className="container">
+      <button
         onClick={() => {
           navigate("/FindId");
         }}
       >
         아이디 찾기
-      </span>
-      <span
+      </button>
+      <button
         onClick={() => {
           navigate("/FindPw");
         }}
       >
         비밀번호 찾기
-      </span>
-      <span
+      </button>
+      <button
         onClick={() => {
           navigate("/JoinMembership");
         }}
       >
         회원가입
-      </span>
-    </>
+      </button>
+      </div>
+    </div>
   );
 }
