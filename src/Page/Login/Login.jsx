@@ -43,10 +43,17 @@ export default function Login() {
         <Input
           value={id}
           onChange={handleId}
+<<<<<<< HEAD
           placeholder="아이디를 입력해주세요"
         />
 
         <Input
+=======
+          placeholder="아이디를 입력해주세요hh"
+        />{" "}
+        <br />
+        <input
+>>>>>>> 7e319d93ebc1fc750079a832d4c79b7f68b73662
           value={pw}
           onChange={handlePw}
           type="password"
