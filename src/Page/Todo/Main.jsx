@@ -31,7 +31,7 @@ export default function Main() {
         type='text'
         value={todo || ""}
         onChange={handleTodos}
-          placeholder='할일을 입력해주세요.'
+          placeholder='할일을 입력해주세.'
         />
         <button>입력</button>
         </form>
