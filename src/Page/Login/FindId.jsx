@@ -28,7 +28,7 @@ export default function FindId() {
   const handleBtn = (e) => {
     e.preventDefault();
     const idInfo = {
-      id: findId,
+      userId: findId,
       name: findName,
       number: findNum,
     };

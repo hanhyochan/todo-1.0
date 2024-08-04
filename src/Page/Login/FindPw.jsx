@@ -26,7 +26,7 @@ export default function FindPw() {
   const handleBtn = (e) => {
     e.preventDefault();
     const idInfo = {
-      id: findId,
+      userId: findId,
       name: findName,
       number: findNum,
     };
