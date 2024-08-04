@@ -7,11 +7,11 @@ export default function Main() {
   const [content, setContent] = useState([]);
   const [handleTodoList2, sethandleTodoList2] = useState([])
 
-  const handleTodoList = [{
+  const handleSubmit = {
     id: `todo-${Date.now()}`,
     content: content,
     checked: false,
-  }]
+  }
 
   sethandleTodoList2(handleTodoList)
 
@@ -33,14 +33,14 @@ export default function Main() {
       <Calendar onClickDay={setValue} />
       <div>{moment(value).format("YYYY년 MM월 DD일")}</div>
       <div>
-        <form onSubmit={handleTodoList}>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={content || ""}
             onChange={(e) => setContent(e.target.value)}
             placeholder="할일을 입력해주세요."
           />
-          <button>입력</button>
+          <button type="submit">입력</button>
         </form>
         <div>{todoList}</div>
       </div>
