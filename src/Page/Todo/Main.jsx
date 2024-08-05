@@ -4,29 +4,40 @@ import moment from "moment";
 
 export default function Main() {
   const [value, setValue] = useState(new Date());
-  const [content, setContent] = useState([]);
-  const [handleTodoList2, sethandleTodoList2] = useState([])
+  const [content, setContent] = useState("");
+  const [todoList, setTodoList] = useState([]);
 
-  const handleSubmit = {
-    id: `todo-${Date.now()}`,
-    content: content,
-    checked: false,
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (content.trim() !== "") {
+      const newTodo = {
+        id: `todo-${Date.now()}`,
+        content: content,
+        checked: false,
+      };
+      setTodoList([...todoList, newTodo]);
+      setContent(""); // 입력 후 입력 필드 비우기
+    }
+  };
 
-  sethandleTodoList2(handleTodoList)
+  const handleCheckboxChange = (id) => {
+    setTodoList(todoList.map(todo => 
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+    ));
+  };
 
-  const todoList = handleTodoList2.map((item) => (
-    <ul>
+  const renderedTodoList = todoList.map((item) => (
+    <ul key={item.id}>
       <li>
-        <input type="checkbox" 
-        
+        <input 
+          type="checkbox" 
+          checked={item.checked} 
+          onChange={() => handleCheckboxChange(item.id)} 
         />
-        <span>{content}</span>
+        <span>{item.content}</span>
       </li>
     </ul>
-  ))
-
-  console.log(handleTodoList)
+  ));
 
   return (
     <div>
@@ -36,13 +47,13 @@ export default function Main() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            value={content || ""}
+            value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="할일을 입력해주세요."
           />
           <button type="submit">입력</button>
         </form>
-        <div>{todoList}</div>
+        <div>{renderedTodoList}</div>
       </div>
     </div>
   );
