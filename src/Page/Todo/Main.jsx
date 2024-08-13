@@ -7,9 +7,12 @@ export default function Main() {
   const [content, setContent] = useState("");
   const [todoList, setTodoList] = useState([]);
 
+  localStorage.setItem('todoList', JSON.stringify(todoList));
+
   function handleSubmit(e) {
     e.preventDefault();
     if (content.trim() === "") return;
+
     const todoInfo = {
       id: `todo-${Date.now()}`,
       content: content,
@@ -18,6 +21,12 @@ export default function Main() {
     setTodoList([...todoList, todoInfo]);
     setContent("");
   }
+
+  const handleCheckbox = (id) => {
+    setTodoList(todoList.map(x => 
+      x.id === id ? { ...x, checked: !x.checked } : x
+    ));
+  };
 
   const renderedTodoList = todoList.map((x) => (
     <ul key={x.id}>
@@ -43,13 +52,13 @@ export default function Main() {
             type="text"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="할일을 입력해주세요."
+            placeholder="할일을 입력해주세요.."
           />
           <button>입력</button>
         </form>
-
-        <div>{renderedTodoList}</div>
       </div>
+
+      <div>{renderedTodoList}</div>
     </>
   );
 }
