@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import moment from "moment";
 
 export default function Main() {
+  const savedTodoList = JSON.parse(localStorage.getItem('todoList'));
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState(savedTodoList);
 
-  localStorage.setItem('todoList', JSON.stringify(todoList));
+  // localStorage.setItem('todoList', JSON.stringify(todoList));
+  useEffect(() => {
+    localStorage.setItem('todoList', JSON.stringify(todoList))
+  }, [todoList]);
+
 
   function handleSubmit(e) {
     e.preventDefault();
