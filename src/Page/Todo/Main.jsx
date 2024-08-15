@@ -4,15 +4,15 @@ import moment from "moment";
 
 export default function Main() {
   const savedTodoList = JSON.parse(localStorage.getItem('todoList'));
+
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
   const [todoList, setTodoList] = useState(savedTodoList);
+  const [view, setView] = useState(true);
 
-  // localStorage.setItem('todoList', JSON.stringify(todoList));
   useEffect(() => {
     localStorage.setItem('todoList', JSON.stringify(todoList))
   }, [todoList]);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,18 +33,39 @@ export default function Main() {
     ));
   };
 
+  const deleteBtn = (id) => {
+    const updatedTodoList = todoList.filter(todoList => todoList.id !== id);
+    setTodoList(updatedTodoList)
+  };
+
+
   const renderedTodoList = todoList.map((x) => (
-    <ul key={x.id}>
-      <li>
+    <div key={x.id}>
+      <label>
         <input
           type="checkbox"
           checked={x.checked}
           onChange={() => handleCheckbox(x.id)}
         />
-        <span>{x.content}</span>
-      </li>
-    </ul>
+        <span
+        onClick={()=>console.log(x.id)}
+        >{x.content}</span>
+        <button
+        onClick={() => deleteBtn(x.id)}
+        >삭제</button>
+        <button
+        onClick={() => setView(false)}
+        >수정</button>
+      </label>
+
+    </div>
   ));
+
+  const editTodoList = (
+    <div>하이</div>
+  )
+
+
 
   return (
     <>
@@ -63,7 +84,7 @@ export default function Main() {
         </form>
       </div>
 
-      <div>{renderedTodoList}</div>
+      <div>{view ? renderedTodoList : editTodoList}</div>
     </>
   );
 }
