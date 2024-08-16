@@ -52,7 +52,7 @@ export default function Main() {
         >{x.content}</span>
         <button
         onClick={() => deleteBtn(x.id)}
-        >삭제wp</button>
+        >삭제</button>
         <button
         onClick={() => setView(false)}
         >수정</button>
