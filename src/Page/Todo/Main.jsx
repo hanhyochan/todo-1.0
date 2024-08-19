@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import moment from "moment";
 
 export default function Main() {
-  const savedTodoList = JSON.parse(localStorage.getItem('todoList'));
+  const savedTodoList = JSON.parse(localStorage.getItem("todoList"));
 
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
@@ -11,7 +11,7 @@ export default function Main() {
   const [view, setView] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem('todoList', JSON.stringify(todoList))
+    localStorage.setItem("todoList", JSON.stringify(todoList));
   }, [todoList]);
 
   function handleSubmit(e) {
@@ -28,44 +28,32 @@ export default function Main() {
   }
 
   const handleCheckbox = (id) => {
-    setTodoList(todoList.map(x => 
-      x.id === id ? { ...x, checked: !x.checked } : x
-    ));
+    setTodoList(
+      todoList.map((x) => (x.id === id ? { ...x, checked: !x.checked } : x))
+    );
   };
 
   const deleteBtn = (id) => {
-    const updatedTodoList = todoList.filter(todoList => todoList.id !== id);
-    setTodoList(updatedTodoList)
+    const updatedTodoList = todoList.filter((todoList) => todoList.id !== id);
+    setTodoList(updatedTodoList);
   };
 
-
   const renderedTodoList = todoList.map((x) => (
-    <div key={x.id}>
-      <label>
+    <li>
+      <label key={x.id}>
         <input
           type="checkbox"
           checked={x.checked}
           onChange={() => handleCheckbox(x.id)}
         />
-        <span
-        onClick={()=>console.log(x.id)}
-        >{x.content}</span>
-        <button
-        onClick={() => deleteBtn(x.id)}
-        >삭제</button>
-        <button
-        onClick={() => setView(false)}
-        >수정</button>
+        <span>{x.content}</span>
+        <button onClick={() => deleteBtn(x.id)}>삭제</button>
+        <button onClick={() => setView(false)}>수정</button>
       </label>
-
-    </div>
+    </li>
   ));
 
-  const editTodoList = (
-    <div>하이</div>
-  )
-
-
+  const editTodoList = <div>하이</div>;
 
   return (
     <>
@@ -78,13 +66,15 @@ export default function Main() {
             type="text"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="할일을 입력해주세요.."
+            placeholder="할일을 입력해주세요..."
           />
           <button>입력</button>
         </form>
       </div>
 
-      <div>{view ? renderedTodoList : editTodoList}</div>
+      <ul>
+        {view ? renderedTodoList : editTodoList}
+      </ul>
     </>
   );
 }
