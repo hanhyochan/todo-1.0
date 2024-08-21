@@ -66,7 +66,7 @@ export default function Main() {
             type="text"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="할일을 입력해주세요."
+            placeholder="할일을 입력해주세요.."
           />
           <button>입력</button>
         </form>
