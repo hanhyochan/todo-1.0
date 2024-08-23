@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import moment from "moment";
+import Todos from "./Todos";
 
 export default function Main() {
   const savedTodoList = JSON.parse(localStorage.getItem("todoList"));
@@ -8,7 +9,6 @@ export default function Main() {
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
   const [todoList, setTodoList] = useState(savedTodoList);
-  const [view, setView] = useState(true);
 
   useEffect(() => {
     localStorage.setItem("todoList", JSON.stringify(todoList));
@@ -27,33 +27,9 @@ export default function Main() {
     setContent("");
   }
 
-  const handleCheckbox = (id) => {
-    setTodoList(
-      todoList.map((x) => (x.id === id ? { ...x, checked: !x.checked } : x))
-    );
-  };
-
-  const deleteBtn = (id) => {
-    const updatedTodoList = todoList.filter((todoList) => todoList.id !== id);
-    setTodoList(updatedTodoList);
-  };
-
   const renderedTodoList = todoList.map((x) => (
-    <li>
-      <label key={x.id}>
-        <input
-          type="checkbox"
-          checked={x.checked}
-          onChange={() => handleCheckbox(x.id)}
-        />
-        <span>{x.content}</span>
-        <button onClick={() => deleteBtn(x.id)}>삭제</button>
-        <button onClick={() => setView(false)}>수정</button>
-      </label>
-    </li>
+    <Todos key={x.id} id={x.id} checked={x.checked} content={x.content} />
   ));
-
-  const editTodoList = <div>하이</div>;
 
   return (
     <>
@@ -72,9 +48,7 @@ export default function Main() {
         </form>
       </div>
 
-      <ul>
-        {view ? renderedTodoList : editTodoList}
-      </ul>
+      <ul>{renderedTodoList}</ul>
     </>
   );
 }
