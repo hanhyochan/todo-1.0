@@ -8,7 +8,7 @@ export default function Main() {
 
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
-  const [todoList, setTodoList] = useState(savedTodoList);
+  const [todoList, setTodoList] = useState(savedTodoList || []);
 
   useEffect(() => {
     localStorage.setItem("todoList", JSON.stringify(todoList));
