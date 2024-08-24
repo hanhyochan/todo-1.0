@@ -27,8 +27,38 @@ export default function Main() {
     setContent("");
   }
 
+  const deleteBtn = (id) => {
+    console.log(id);
+    const updatedTodoList = todoList.filter((todoList) => todoList.id !== id);
+    setTodoList(updatedTodoList);
+  };
+
+  const handleCheckbox = (id) => {
+    setTodoList(
+      todoList.map((x) => (x.id === id ? { ...x, checked: !x.checked } : x))
+    );
+  };
+
+  function editContent(id, newContent) {
+    const editedContent = todoList.map((x) => {
+      if (x.id === id) {
+        return { ...x, content: newContent };
+      }
+      return x;
+    });
+    setTodoList(editedContent);
+  }
+
   const renderedTodoList = todoList.map((x) => (
-    <Todos key={x.id} id={x.id} checked={x.checked} content={x.content} />
+    <Todos
+      key={x.id}
+      id={x.id}
+      checked={x.checked}
+      content={x.content}
+      deleteBtn={deleteBtn}
+      handleCheckbox={handleCheckbox}
+      editContent={editContent}
+    />
   ));
 
   return (

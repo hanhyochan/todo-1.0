@@ -1,23 +1,22 @@
 import React from "react";
 import { useState } from "react";
 
-export default function Todos({ id, checked, content }) {
-  const savedTodoList = JSON.parse(localStorage.getItem("todoList"));
-
+export default function Todos({
+  id,
+  checked,
+  content,
+  deleteBtn,
+  handleCheckbox,
+  editContent,
+}) {
   const [view, setView] = useState(true);
-  const [todoList, setTodoList] = useState(savedTodoList);
+  const [newContent, setNewContent] = useState(content);
 
-  const handleCheckbox = (id) => {
-    setTodoList(
-      todoList.map((x) => (x.id === id ? { ...x, checked: !x.checked } : x))
-    );
-  };
-
-  const deleteBtn = (id) => {
-    console.log(id);
-    const updatedTodoList = todoList.filter((todoList) => todoList.id !== id);
-    setTodoList(updatedTodoList);
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    editContent(id, newContent);
+    setView(true);
+  }
 
   const viewTemplate = (
     <>
@@ -38,7 +37,15 @@ export default function Todos({ id, checked, content }) {
 
   const editTemplate = (
     <>
-      <p>하이</p>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={newContent}
+          onChange={(e) => setNewContent(e.target.value)}
+        />
+        <button onClick={() => setView(true)}>취소</button>
+        <button>저장</button>
+      </form>
     </>
   );
 
