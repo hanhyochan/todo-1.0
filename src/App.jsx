@@ -1,5 +1,5 @@
 import Router from "./Page/Router"
-import "./App.css"
+import "./style.css"
 
 function App() {
 

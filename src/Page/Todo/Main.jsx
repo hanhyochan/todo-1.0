@@ -83,7 +83,7 @@ export default function Main() {
 
   return (
     <>
-      <Calendar onClickDay={setValue} />
+      <Calendar id="calendar" onClickDay={setValue} />
       <div>{moment(value).format("YYYY년 MM월 DD일")}</div>
 
       <div>
