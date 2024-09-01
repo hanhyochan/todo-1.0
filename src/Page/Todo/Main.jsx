@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import Todos from "./Todos";
 
@@ -82,23 +83,26 @@ export default function Main() {
   ));
 
   return (
-    <>
-      <Calendar id="calendar" onClickDay={setValue} />
-      <div>{moment(value).format("YYYY년 MM월 DD일")}</div>
+    <div id="todo_layout_1">
+      <div id="todo_layout_2">
+        <Calendar onClickDay={setValue} />
 
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="할일을 입력해주세요.."
-          />
-          <button>입력</button>
-        </form>
+        <div id="todoList">
+          <h3>{moment(value).format("YYYY년 MM월 DD일")}</h3>
+          <div>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="할일을 입력해주세요.."
+              />
+              <button>입력</button>
+            </form>
+          </div>
+          <ul>{renderedTodoList}</ul>
+        </div>
       </div>
-
-      <ul>{renderedTodoList}</ul>
-    </>
+    </div>
   );
 }

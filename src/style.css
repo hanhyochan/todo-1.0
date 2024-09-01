@@ -3,12 +3,14 @@ html,
 body {
     width: 100%;
     height: 100%;
+    background-color: #ddd;
 }
 
-button{
+button {
     background-color: white;
-    border:none;
+    border: none;
 }
+
 .input {
     border: 2px solid violet;
     outline: none;
@@ -70,6 +72,80 @@ form {
     margin-top: 1rem;
 }
 
-#calendar {
-    background-color: red;
+/* calendar */
+
+.react-calendar {
+    width: 22rem;
+    background-color: rgb(240, 240, 240);
+    border: 1px solid rgb(209, 208, 208);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.react-calendar__navigation button {
+    min-width: 44px;
+    border-radius: 50rem;
+    font-size: 15px;
+}
+
+.react-calendar__month-view abbr {
+    color: rgb(33, 33, 33);
+    text-decoration: none;
+    padding-bottom: 1rem;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    padding-bottom: 1rem;
+    font-size: 13.5px;
+}
+
+.react-calendar__month-view__weekdays__weekday--weekend abbr[title="일요일"] {
+    color: red;
+}
+
+.react-calendar__tile--now {
+    background-color: rgb(0, 149, 87);
+
+    abbr {
+        color: white;
+    }
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+    background: rgb(0, 108, 63);
+}
+
+.react-calendar__tile {
+    padding: 13px 0px 13px;
+    border-radius: 50rem;
+}
+
+/* todoList */
+
+#todo_layout_1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#todo_layout_2 {
+    display: flex;
+    justify-content: space-between;
+    width: 50rem;
+    height: 30rem;
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-sizing: border-box;
+    box-shadow: 0px 8px 6px -6px #666;
+}
+
+#todoList {
+    width: 22rem;
+}
+
+h3 {
+    color: rgb(0, 149, 87);
 }

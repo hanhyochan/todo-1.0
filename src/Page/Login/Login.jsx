@@ -46,9 +46,6 @@ export default function Login() {
           placeholder="아이디를 입력해주세요"
         />
         <Input
-          placeholder="아이디를 입력해주세요"
-        />
-        <Input
           value={pw}
           onChange={handlePw}
           type="password"
