@@ -110,11 +110,19 @@ form {
         color: white;
     }
 }
-
-.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--active {
+    
+    background: #e6e6e6;
+    color: white;
+    border: 2px solid red;
+}
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus {
+    background: #e6e6e6;
+}
+/* .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
     background: rgb(0, 108, 63);
-}
+} */
 
 .react-calendar__tile {
     padding: 13px 0px 13px;

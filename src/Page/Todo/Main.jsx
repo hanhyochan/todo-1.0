@@ -11,7 +11,7 @@ export default function Main() {
   const [content, setContent] = useState("");
   const [todosByDate, setTodosByDate] = useState(savedTodoList);
 
-  const selectedDate = moment(value).format("YYYY년 MM월 DD일");
+  const selectedDate = moment(value).format("YYYYMMDD");
 
   const todoList = todosByDate[selectedDate] || [];
 
@@ -24,13 +24,13 @@ export default function Main() {
     if (content.trim() === "") return;
 
     const todoInfo = {
-      id: `todo-${Date.now()}`,
+      id: crypto.randomUUID(),
       content: content,
       checked: false,
     };
 
     const updatedTodosByDate = {
-      ...todosByDate,
+      ...todosByDate, 
       [selectedDate]: [...(todosByDate[selectedDate] || []), todoInfo],
     };
 
@@ -40,12 +40,47 @@ export default function Main() {
 
   const deleteBtn = (id) => {
     console.log(id);
-    const updatedTodoList = todoList.filter((todoList) => todoList.id !== id);
+    const updatedTodoList = todoList.filter((todo) => todo.id !== id);
+    // updatedTodoList라는 변수에 todoList 배열에 들어있는 갯수 만큼 todo의 아이디와 내가 선택한 todo id를 비교한다.
+    // 내가 선택한 todo id와 같은 id 갖고 있는 애 빼고 모두 updatedTodoList에 넣는다.
+
     const updatedTodosByDate = {
       ...todosByDate,
       [selectedDate]: updatedTodoList,
     };
-    setTodosByDate(updatedTodosByDate);
+    // updatedTodosByDate라는 변수에 기존 todosByDate의 내용을 스프레드 연산자로 풀고(...todosByDate), 기존 선택한 날짜([selectedDate])에 updatedTodoList를 넣은 값을 업데이트한다.
+    // 기존 데이터와 변경된 데이터를 한번에 변수에 넣으면 덮어씌우기 되어서 변경된 값으로 저장된다.
+
+/*
+1. delete 객체.키값
+2. 구조분해
+3. Object.entries(배열로 변환)=>filter=>객체(Object.fromEntries)
+//{"20240907":[{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}],"20240915":[]}
+//=>[[key,value],[key,value],[key,value]]
+console.log(Object.entries(updatedTodosByDate))
+//[["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]], [20240915, []]]
+
+Object.entries(updatedTodosByDate).filter((obj)=>console.log(obj))
+/*["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]
+
+[20240915, []]
+
+Object.entries(updatedTodosByDate).filter((obj)=>console.log(obj[0]))
+/*["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]
+
+[20240915, []]
+*/
+
+if (updatedTodoList.length === 0) {
+  const {[selectedDate]:_,...newUpdated}=updatedTodosByDate
+  setTodosByDate(newUpdated);
+} else{
+  setTodosByDate(updatedTodosByDate);
+}
+// 위에서 선택한 날짜인 [selectedDate]의 갯수가 0일경우(변경된 배열)
+// updatedTodosByDate을 구조분해할당해서 선택한 날짜([selectedDate])는 그대로 넣고(키), 변경된 값은 rest연산자로 newUpdated라는 이름으로 할당한다.
+
+// 위에서 선택한 날짜인 [selectedDate]의 갯수가 0이 아닐 경우 updatedTodosByDate를 그대로 useState에 넣는다.
   };
 
   const handleCheckbox = (id) => {
