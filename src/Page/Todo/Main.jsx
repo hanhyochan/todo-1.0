@@ -5,88 +5,85 @@ import moment from "moment";
 import Todos from "./Todos";
 
 export default function Main() {
+  // todosByDate라는 이름으로 로컬스토리지에 저장된 문자열을 객체로 바꿔서 가져온다.
   const savedTodoList = JSON.parse(localStorage.getItem("todosByDate")) || {};
 
+  // 누른 날짜값 저장, 투두input에 입력한 투두, 로컬스토리지에서 불러온 투두리스트 저장
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
   const [todosByDate, setTodosByDate] = useState(savedTodoList);
 
+  // todoInfo 객체의 키에 사용 될 내가 현재 누른 날짜값
   const selectedDate = moment(value).format("YYYYMMDD");
 
+  // 현재 선택한 selectedDate를 키값으로 가진 로컬스토리지에서 불러온 투두들 || selectedDate 키 값이 없을 경우는 빈 배열
+  // [
+  //  { id: '1', content: 'Todo 1', checked: false },
+  //  { id: '2', content: 'Todo 2', checked: true },
+  // ],
   const todoList = todosByDate[selectedDate] || [];
+  console.log(todoList);
 
+  // todosByDate가 바뀔 때마다 todosByDate를 todosByDate라는 이름으로 로컬스토리지에 저장
   useEffect(() => {
     localStorage.setItem("todosByDate", JSON.stringify(todosByDate));
   }, [todosByDate]);
 
+  // 투두input에서 투두가 제출 되었을 때
   function handleSubmit(e) {
     e.preventDefault();
+    // content가 빈 문자열일 경우에는 함수 정지. early if문이라고 함.
     if (content.trim() === "") return;
 
+    // 투두input에서 입력한 값에 id, content, checked 항목으로 나누어 저장한다.
     const todoInfo = {
       id: crypto.randomUUID(),
       content: content,
       checked: false,
     };
 
+    // todosByDate를 복사해 펼쳐놓고 그 안에 선택한 selectedDate 안에 기존에 있던 투두 내용들과(스프레드 연산자) 새로 추가된 todoInfo를 덮어씌워 저장한다.
     const updatedTodosByDate = {
-      ...todosByDate, 
+      ...todosByDate,
       [selectedDate]: [...(todosByDate[selectedDate] || []), todoInfo],
     };
 
+    // 복사되어 새로 업데이트된 updatedTodosByDate를 TodosByDate에 저장한다.
     setTodosByDate(updatedTodosByDate);
     setContent("");
   }
 
+  // todoInfo에서 id를 받는다.
   const deleteBtn = (id) => {
     console.log(id);
-    const updatedTodoList = todoList.filter((todo) => todo.id !== id);
-    // updatedTodoList라는 변수에 todoList 배열에 들어있는 갯수 만큼 todo의 아이디와 내가 선택한 todo id를 비교한다.
-    // 내가 선택한 todo id와 같은 id 갖고 있는 애 빼고 모두 updatedTodoList에 넣는다.
 
+    // todoList의 갯수만큼 todo라는 매개변수(임시) 이름으로 todoList 객체들의 id와 내가 클릭한 엘리먼트의 id를 비교하여 id가 같지 않은 것들만 updatedTodoList에 저장한다.
+    const updatedTodoList = todoList.filter((todo) => todo.id !== id);
+
+    // 기존의 todosByDate를 복사해 펼쳐놓고(스프레드 연산자) 선택된 selectedDate에 새로 업데이트 된 updatedTodoList를 할당한 후 todosByDate에 덮어씌워 저장한다.
     const updatedTodosByDate = {
       ...todosByDate,
       [selectedDate]: updatedTodoList,
     };
-    // updatedTodosByDate라는 변수에 기존 todosByDate의 내용을 스프레드 연산자로 풀고(...todosByDate), 기존 선택한 날짜([selectedDate])에 updatedTodoList를 넣은 값을 업데이트한다.
-    // 기존 데이터와 변경된 데이터를 한번에 변수에 넣으면 덮어씌우기 되어서 변경된 값으로 저장된다.
 
-/*
-1. delete 객체.키값
-2. 구조분해
-3. Object.entries(배열로 변환)=>filter=>객체(Object.fromEntries)
-//{"20240907":[{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}],"20240915":[]}
-//=>[[key,value],[key,value],[key,value]]
-console.log(Object.entries(updatedTodosByDate))
-//[["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]], [20240915, []]]
-
-Object.entries(updatedTodosByDate).filter((obj)=>console.log(obj))
-/*["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]
-
-[20240915, []]
-
-Object.entries(updatedTodosByDate).filter((obj)=>console.log(obj[0]))
-/*["20240907", [{"id":"5ec6bdb4-bc54-4097-a2a2-6579eb1b6d22","content":"ㄴㅇㄹㅇㄴㄹ","checked":false}]
-
-[20240915, []]
-*/
-
-if (updatedTodoList.length === 0) {
-  const {[selectedDate]:_,...newUpdated}=updatedTodosByDate
-  setTodosByDate(newUpdated);
-} else{
-  setTodosByDate(updatedTodosByDate);
-}
-// 위에서 선택한 날짜인 [selectedDate]의 갯수가 0일경우(변경된 배열)
-// updatedTodosByDate을 구조분해할당해서 선택한 날짜([selectedDate])는 그대로 넣고(키), 변경된 값은 rest연산자로 newUpdated라는 이름으로 할당한다.
-
-// 위에서 선택한 날짜인 [selectedDate]의 갯수가 0이 아닐 경우 updatedTodosByDate를 그대로 useState에 넣는다.
+    // updatedTodoList가 없으면(삭제했을 때 투두가 더이상 없으면) updatedTodosByDate를 구조분해할당해서 선택된 selectedDate의 데이터 값은 '_'으로 삭제 처리하고 그 rest연산자로(...)그 나머지는 newUpdated라는 이름으로 TodosByDate에 저장한다.
+    // updatedTodosByDate가 0이 아닌 경우 그냥 TodosByDate에 저장한다.
+    if (updatedTodoList.length === 0) {
+      const { [selectedDate]: _, ...newUpdated } = updatedTodosByDate;
+      setTodosByDate(newUpdated);
+    } else {
+      setTodosByDate(updatedTodosByDate);
+    }
   };
 
+  // todoInfo에서 id를 받는다.
   const handleCheckbox = (id) => {
+    // todoList의 배열 수 만큼 todo라는 이름의 매개변수로 전체 todo의 id랑 선택한 객체 id랑 비교해서 id가 같을 경우 todo를 복사하여 checked라는 키 값을 !todo.checked를 통해 반전시킨 후 todo에 저장한다. id가 다를 경우엔 그냥 todo를 반환한다.
     const updatedTodoList = todoList.map((todo) =>
       todo.id === id ? { ...todo, checked: !todo.checked } : todo
     );
+
+    // todosByDate를 스프레드 연산자로 복사해 펼쳐놓고 선택된 selectedDate 날짜에 updatedTodoList를 할당한 후 todosByDate에 덮어씌워 저장해서 updatedTodosByDate 변수에 저장한다.
     const updatedTodosByDate = {
       ...todosByDate,
       [selectedDate]: updatedTodoList,
@@ -104,6 +101,8 @@ if (updatedTodoList.length === 0) {
     };
     setTodosByDate(updatedTodosByDate);
   }
+
+  function dateColor() {}
 
   const renderedTodoList = todoList.map((x) => (
     <Todos
