@@ -15,7 +15,6 @@ export default function Todos({
   function handleSubmit(e) {
     e.preventDefault();
     editContent(id, newContent);
-    setView(true);
   }
 
   const viewTemplate = (

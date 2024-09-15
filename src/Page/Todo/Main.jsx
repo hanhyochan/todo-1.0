@@ -37,9 +37,18 @@ export default function Main() {
   const dateColor = ({ date, view }) => {
     if (view === "month") {
       const calendarDate = moment(date).format("YYYYMMDD");
-      if (datekeys.includes(calendarDate)) {
-        return "dateColor";
-      }
+
+      // const comparison = datekeys.filter((x) => x.includes(calendarDate))
+      // if (comparison.length > 0) {
+      //   return "dateColor"
+      // } 
+
+      const comparison = datekeys.filter((x) => x === calendarDate);
+    console.log('comparison:', comparison);
+
+    if (comparison.length > 0) {
+      return "dateColor";
+    }
     }
     return null;
   };
@@ -57,7 +66,8 @@ export default function Main() {
       checked: false,
     };
 
-    // todosByDate를 복사해 펼쳐놓고 그 안에 선택한 selectedDate 안에 기존에 있던 투두 내용들과(스프레드 연산자) 새로 추가된 todoInfo를 덮어씌워 저장한다.
+    // 기존 todosByDate를 복사해 펼쳐놓고 그 안에 선택한 selectedDate 안에 기존에 있던 투두 내용들과(스프레드 연산자) 새로 추가된 todoInfo를 덮어씌워 저장한다.
+    // 전체 기존 복사+펼쳐놓음 > 선택한 날짜 기존 할일 복사+펼쳐놓은 후 새로운 todoInfo저장함 > 전체 기존 복사+펼쳐놓은거에 덮어씌워 저장
     const updatedTodosByDate = {
       ...todosByDate,
       [selectedDate]: [...(todosByDate[selectedDate] || []), todoInfo],
@@ -85,7 +95,7 @@ export default function Main() {
       const { [selectedDate]: _, ...newUpdated } = updatedTodosByDate;
       setTodosByDate(newUpdated);
     } else {
-      setTodosByDate(updatedTodosByDate);
+      // setTodosByDate(updatedTodosByDate);
     }
   };
 
@@ -131,7 +141,6 @@ export default function Main() {
     <div id="todo_layout_1">
       <div id="todo_layout_2">
         <Calendar onClickDay={setValue} tileClassName={dateColor} />
-
         <div id="todoList">
           <h3>{moment(value).format("YYYY년 MM월 DD일")}</h3>
           <div>
