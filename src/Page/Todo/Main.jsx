@@ -12,7 +12,9 @@ export default function Main() {
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
   const [todosByDate, setTodosByDate] = useState(savedTodoList);
+  const [dateColor, setDateColor] = useState(false)
 
+  
   // todoInfo 객체의 키에 사용 될 내가 현재 누른 날짜값
   const selectedDate = moment(value).format("YYYYMMDD");
 
@@ -22,7 +24,6 @@ export default function Main() {
   //  { id: '2', content: 'Todo 2', checked: true },
   // ],
   const todoList = todosByDate[selectedDate] || [];
-  console.log(todoList);
 
   // todosByDate가 바뀔 때마다 todosByDate를 todosByDate라는 이름으로 로컬스토리지에 저장
   useEffect(() => {
@@ -55,7 +56,6 @@ export default function Main() {
 
   // todoInfo에서 id를 받는다.
   const deleteBtn = (id) => {
-    console.log(id);
 
     // todoList의 갯수만큼 todo라는 매개변수(임시) 이름으로 todoList 객체들의 id와 내가 클릭한 엘리먼트의 id를 비교하여 id가 같지 않은 것들만 updatedTodoList에 저장한다.
     const updatedTodoList = todoList.filter((todo) => todo.id !== id);
@@ -101,8 +101,6 @@ export default function Main() {
     };
     setTodosByDate(updatedTodosByDate);
   }
-
-  function dateColor() {}
 
   const renderedTodoList = todoList.map((x) => (
     <Todos
