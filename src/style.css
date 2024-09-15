@@ -103,25 +103,18 @@ form {
 }
 
 .react-calendar__tile--now {
-    background-color: rgb(0, 149, 87);
+    background-color: rgb(4, 172, 102);
 
     abbr {
         color: white;
     }
 }
 .react-calendar__tile--active {
-    
-    background: #e6e6e6;
-    color: white;
-    border: 2px solid red;
+    background: none;
 }
 .react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus {
-    background: #e6e6e6;
+    background: rgb(143, 213, 172);
 }
-/* .react-calendar__tile--now:enabled:hover,
-.react-calendar__tile--now:enabled:focus {
-    background: rgb(0, 108, 63);
-} */
 
 .react-calendar__tile {
     padding: 13px 0px 13px;
@@ -156,3 +149,7 @@ form {
 h3 {
     color: rgb(0, 149, 87);
 }
+
+.dateColor {
+    background-color: rgb(205, 231, 222); /* 원하는 색상으로 변경 */
+  }

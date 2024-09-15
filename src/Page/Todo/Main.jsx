@@ -12,9 +12,7 @@ export default function Main() {
   const [value, setValue] = useState(new Date());
   const [content, setContent] = useState("");
   const [todosByDate, setTodosByDate] = useState(savedTodoList);
-  const [dateColor, setDateColor] = useState(false)
 
-  
   // todoInfo 객체의 키에 사용 될 내가 현재 누른 날짜값
   const selectedDate = moment(value).format("YYYYMMDD");
 
@@ -29,6 +27,22 @@ export default function Main() {
   useEffect(() => {
     localStorage.setItem("todosByDate", JSON.stringify(todosByDate));
   }, [todosByDate]);
+
+  // todosByDate 객체의 키를 문자열 배열로 만든다.
+  const datekeys = Object.keys(todosByDate);
+
+  // 1. calendar의 모드가 month일 때 로직이 시행되게 한다.
+  // 2. calendar의 날짜들을 datekeys와 비교할 수 있도록 객체 배열로 만든다.
+  // 3. include함수로 datekeys가 formattedDate 포함되어있을 경우 스타일을 적용한다.
+  const dateColor = ({ date, view }) => {
+    if (view === "month") {
+      const calendarDate = moment(date).format("YYYYMMDD");
+      if (datekeys.includes(calendarDate)) {
+        return "dateColor";
+      }
+    }
+    return null;
+  };
 
   // 투두input에서 투두가 제출 되었을 때
   function handleSubmit(e) {
@@ -56,7 +70,6 @@ export default function Main() {
 
   // todoInfo에서 id를 받는다.
   const deleteBtn = (id) => {
-
     // todoList의 갯수만큼 todo라는 매개변수(임시) 이름으로 todoList 객체들의 id와 내가 클릭한 엘리먼트의 id를 비교하여 id가 같지 않은 것들만 updatedTodoList에 저장한다.
     const updatedTodoList = todoList.filter((todo) => todo.id !== id);
 
@@ -117,7 +130,7 @@ export default function Main() {
   return (
     <div id="todo_layout_1">
       <div id="todo_layout_2">
-        <Calendar onClickDay={setValue} />
+        <Calendar onClickDay={setValue} tileClassName={dateColor} />
 
         <div id="todoList">
           <h3>{moment(value).format("YYYY년 MM월 DD일")}</h3>
