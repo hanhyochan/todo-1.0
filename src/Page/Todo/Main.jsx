@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import Todos from "./Todos";
+// import { DeleteTodo } from "./utils/DeleteTodo";
 
 export default function Main() {
   // todosByDate라는 이름으로 로컬스토리지에 저장된 문자열을 객체로 바꿔서 가져온다.
@@ -38,17 +39,10 @@ export default function Main() {
     if (view === "month") {
       const calendarDate = moment(date).format("YYYYMMDD");
 
-      // const comparison = datekeys.filter((x) => x.includes(calendarDate))
-      // if (comparison.length > 0) {
-      //   return "dateColor"
-      // } 
-
-      const comparison = datekeys.filter((x) => x === calendarDate);
-    console.log('comparison:', comparison);
-
-    if (comparison.length > 0) {
-      return "dateColor";
-    }
+      const comparison = datekeys.filter((x) => x.includes(calendarDate));
+      if (comparison.length > 0) {
+        return "dateColor";
+      }
     }
     return null;
   };
@@ -88,14 +82,13 @@ export default function Main() {
       ...todosByDate,
       [selectedDate]: updatedTodoList,
     };
-
     // updatedTodoList가 없으면(삭제했을 때 투두가 더이상 없으면) updatedTodosByDate를 구조분해할당해서 선택된 selectedDate의 데이터 값은 '_'으로 삭제 처리하고 그 rest연산자로(...)그 나머지는 newUpdated라는 이름으로 TodosByDate에 저장한다.
     // updatedTodosByDate가 0이 아닌 경우 그냥 TodosByDate에 저장한다.
     if (updatedTodoList.length === 0) {
       const { [selectedDate]: _, ...newUpdated } = updatedTodosByDate;
       setTodosByDate(newUpdated);
     } else {
-      // setTodosByDate(updatedTodosByDate);
+      setTodosByDate(updatedTodosByDate);
     }
   };
 
@@ -118,6 +111,7 @@ export default function Main() {
     const updatedTodoList = todoList.map((todo) =>
       todo.id === id ? { ...todo, content: newContent } : todo
     );
+
     const updatedTodosByDate = {
       ...todosByDate,
       [selectedDate]: updatedTodoList,
